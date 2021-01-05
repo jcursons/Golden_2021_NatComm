@@ -1,7 +1,9 @@
 # Golden_2021_NatComm
 A repository to accompany the manuscript:
+
 Golden, E *et al.* [Blancafort, P.]. (2021). The oncogene AAMDC links PI3K-AKT-mTOR signaling with metabolic
 reprograming in estrogen receptor-positive breast cancer. *Nature Communications*. In press.
+
 **DOI**: not-yet-known
 
 # Overview
@@ -9,7 +11,7 @@ This script accompanies the 2021 Nature Communications manuscript by Golden et a
 cancer cell lines on the gene AAMDC (previously C11orf67), using data from the 'DepMap' project and producing
 visualisations of RNA-seq data comparing specific drugs against shRNA-mediated AAMDC knockdown.
 
-For further information on this code please contact jcursons (details below), for details on the scientific work
+For further information on this code please contact jcursons (repository owner), for details on the scientific work
 please contact the corresponding author Assoc. Prof. Pilar Blancafort:
 - pilar.blancafort (at) uwa (dot) edu (dot) au
 - pilar.blancafort (at) gmail (dot) com
