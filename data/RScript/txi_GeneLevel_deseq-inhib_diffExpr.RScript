@@ -1,0 +1,49 @@
+## Load the required libraries
+library(tximport)
+library(readr)
+library(GenomicFeatures)
+library(DESeq2)
+
+# Use the ENSEMBL GTF file to generate a dataframe of ENST to ENSG mappings
+txdb <- makeTxDbFromGFF("Z:/genomes/ENSEMBL/Homo_sapiens.GRCh38.89.gtf")
+k <- keys(txdb, keytype = "GENEID")
+df <- select(txdb, keys = k, keytype = "GENEID", columns = "TXNAME")
+tx2gene <- df[, 2:1]
+
+
+## Examine the data directory to identify the samples and their corresponding quant.sf files
+dirBase<-"Z:/data/Blancafort-AAMDC/salmon"
+
+arraySamples <- c("A2", "A3", "A4", "B1", "B3", "B4", "C2", "C3", "C4", "D1", "D2", "D3", "E1", "E2", "E4")
+
+
+samples<-as.list(arraySamples)
+files <- file.path(dirBase, samples, "quant.sf")
+
+files <- c(files)
+arraySamples <- c(arraySamples)
+## Check that all of the files exist
+all(file.exists(files))
+
+## Load the files into a single dataframe
+txi <- tximport(files, type = "salmon", tx2gene = tx2gene, ignoreTxVersion=TRUE)
+
+names(txi)
+colnames(txi$counts) <- arraySamples
+colnames(txi$abundance) <- arraySamples
+
+write.csv(as.data.frame(txi), file=file.path(dirBase, "Salmon_tximport_geneLevel-DrugInhib.csv"))
+
+head(txi$counts)
+
+# specify a condition vector for the four columns
+sampleTable <- data.frame(condition = factor(c("DMSO", "DMSO", "DMSO", "Dacto", "Dacto", "Dacto", "Evero", "Evero", "Evero", "AZD", "AZD", "AZD", "Bupar", "Bupar", "Bupar")))
+
+
+dds <- DESeqDataSetFromTximport(txi, sampleTable, ~condition)
+ddsRes <- DESeq(dds)
+
+write.csv(as.data.frame(results(ddsRes, contrast=c("condition","Dacto","DMSO"))), file=file.path(dirBase, "SUM52-AAMDC-Dacto_vs_DMSO_-_DESeq2_geneLevel.csv"))
+write.csv(as.data.frame(results(ddsRes, contrast=c("condition","Evero","DMSO"))), file=file.path(dirBase, "SUM52-AAMDC-Evero_vs_DMSO_-_DESeq2_geneLevel.csv"))
+write.csv(as.data.frame(results(ddsRes, contrast=c("condition","AZD","DMSO"))), file=file.path(dirBase, "SUM52-AAMDC-AZD_vs_DMSO_-_DESeq2_geneLevel.csv"))
+write.csv(as.data.frame(results(ddsRes, contrast=c("condition","Bupar","DMSO"))), file=file.path(dirBase, "SUM52-AAMDC-Bupar_vs_DMSO_-_DESeq2_geneLevel.csv"))

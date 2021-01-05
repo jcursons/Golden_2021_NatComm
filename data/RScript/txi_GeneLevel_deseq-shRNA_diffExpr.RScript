@@ -1,0 +1,44 @@
+## Load the required libraries
+library(tximport)
+library(readr)
+library(GenomicFeatures)
+library(DESeq2)
+
+# Use the ENSEMBL GTF file to generate a dataframe of ENST to ENSG mappings
+txdb <- makeTxDbFromGFF("Z:/genomes/ENSEMBL/Homo_sapiens.GRCh38.89.gtf")
+k <- keys(txdb, keytype = "GENEID")
+df <- select(txdb, keys = k, keytype = "GENEID", columns = "TXNAME")
+tx2gene <- df[, 2:1]
+
+
+## Examine the data directory to identify the samples and their corresponding quant.sf files
+dirData<-"Z:/data/Blancafort-AAMDC/salmon"
+
+arraySamples <- c("Sum52ORFsh2Replicate1", "Sum52ORFsh2Replicate2", "Sum52ORFsh2Replicate3", "Sum52PlkoEVReplicate1", "Sum52PlkoEVReplicate2", "Sum52PlkoEVReplicate3", "Sum52wildtypeReplicate1", "Sum52wildtypeReplicate2", "Sum52wildtypeReplicate3")
+
+samplesIn<-as.list(arraySamples)
+filesSamples <- file.path(dirData, samplesIn, "quant.sf")
+
+## Check that all of the files exist
+all(file.exists(filesSamples))
+
+## Load the files into a single dataframe
+txi <- tximport(filesSamples, type = "salmon", tx2gene = tx2gene, ignoreTxVersion=TRUE)
+
+names(txi)
+colnames(txi$counts) <- arraySamples
+colnames(txi$abundance) <- arraySamples
+
+write.csv(as.data.frame(txi), file=file.path(dirData, "Salmon_tximport_AML3-geneLevelSelConds.csv"))
+
+head(txi$counts)
+
+# specify a condition vector for the four columns
+sampleTableOne <- data.frame(condition = factor(c("shRNA", "shRNA", "shRNA", "EV", "EV", "EV", "WT", "WT", "WT")))
+
+
+dds <- DESeqDataSetFromTximport(txi, sampleTableOne, ~condition)
+ddsRes <- DESeq(dds)
+
+write.csv(as.data.frame(results(ddsRes, contrast=c("condition","shRNA","EV"))), file=file.path(dirData, "SUM52-AAMDC_shRNA_vs_EV_-_DESeq2_geneLevel.csv"))
+write.csv(as.data.frame(results(ddsRes, contrast=c("condition","EV","WT"))), file=file.path(dirData, "SUM52-AAMDC_EV_vs_WT_-_DESeq2_geneLevel.csv"))
