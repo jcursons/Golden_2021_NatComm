@@ -22,27 +22,33 @@ import urllib
 #
 # For further information on this code please contact jcursons (details below), for details on the scientific work
 #  please contact the corresponding author Assoc. Prof. Pilar Blancafort
-#   pilar.blancafort (at) uwa (dot) edu (dot) au
+#       pilar.blancafort (at) uwa (dot) edu (dot) au
+#       pilar.blancafort (at) gmail (dot) com
 #
-# The authors would like to convey their appreciation for developers of open source modules/dependencies (listed below)
-#  as well as those who have contributed to the DepMap project, including scientists, software developers, and patients
-#  who have generously donated tissue samples. Further information on DepMap is given below within the DepMapTools
-#  class, although users are encouraged to visit: https://depmap.org/portal/depmap/
+# The authors would like to thank those who have contributed to the DepMap project, including scientists, software
+#  developers, and patients who have generously donated tissue samples. Further information on DepMap is given below
+#  within the DepMapTools class, although users are encouraged to visit: https://depmap.org/portal/depmap/
 #
 # Script written by Joe Cursons
-#   joe.cursons (at) gmail (dot) com
-#   github.com/jcursons
+#       joe.cursons (at) gmail (dot) com
+#       github.com/jcursons
 #
-# Last modified by J Cursons 4th Jan 2021
+# Last modified by J Cursons 5th Jan 2021
 #
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-# Dependencies:
-#   - adjust_text
+# Non-standard dependencies:
+# The authors would like to convey their appreciation for developers of open source modules/dependencies, as their
+#  work helped to make this analysis possible.
+#   - adjustText - automatic label placement for matplotlib
+#           https://github.com/Phlya/adjustText
 #   - matplotlib
+#           https://matplotlib.org/
 #   - numpy
+#           https://numpy.org/
 #   - pandas
+#           https://pandas.pydata.org/
 #   - scipy
-#
+#           https://www.scipy.org/
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 class PathDir:
