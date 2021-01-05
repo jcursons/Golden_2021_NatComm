@@ -30,6 +30,10 @@ class are consistent with the location of the data, and filenames in the DepMap 
 ## Data from Golden *et al.*
 A small number of files from the RNA-seq analysis of shRNA and drug treated cells are included within the
 data folder to reproduce figure 5b within the associated manuscript.
+- Note that the RScript files used to produce these differential expression analyses are included within
+the /data/RScript folder. The authors would like to thank the developers of 
+[tximport](https://bioconductor.org/packages/release/bioc/html/tximport.html) and
+[DESeq2](http://bioconductor.org/packages/release/bioc/html/DESeq2.html) for their work.
 
 # Non-standard dependencies
 The authors would like to convey their appreciation for developers of open source modules/dependencies, as their
